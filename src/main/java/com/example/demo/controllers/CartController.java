@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.persistence.Cart;
 import com.example.demo.model.persistence.Item;
 import com.example.demo.model.persistence.User;
-import com.example.demo.repository.CartRepository;
-import com.example.demo.repository.ItemRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repositories.CartRepository;
+import com.example.demo.repositories.ItemRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.model.requests.ModifyCartRequest;
 
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
-	
+
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -32,7 +36,7 @@ public class CartController {
 	@Autowired
 	private ItemRepository itemRepository;
 	
-	@PostMapping("/addToCart")
+	@PostMapping("/add")
 	public ResponseEntity<Cart> addTocart(@RequestBody ModifyCartRequest request) {
 		User user = userRepository.findByUsername(request.getUsername());
 		if(user == null) {
